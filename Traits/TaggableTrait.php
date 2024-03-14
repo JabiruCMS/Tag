@@ -177,4 +177,11 @@ trait TaggableTrait
 
         return trim($name, $separator);
     }
+
+    public function hasTag(string $tag): bool
+    {
+        return $this->tags()->whereHas('translations', function (Builder $q) use ($tag) {
+            $q->where('slug', $this->generateTagSlug($tag));
+        })->exists();
+    }
 }
